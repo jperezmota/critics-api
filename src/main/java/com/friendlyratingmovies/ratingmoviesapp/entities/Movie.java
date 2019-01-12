@@ -1,5 +1,7 @@
 package com.friendlyratingmovies.ratingmoviesapp.entities;
 
+import java.sql.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +10,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Entity
 @Table(name = "movies")
@@ -29,9 +36,6 @@ public class Movie {
 	@NotNull
 	@Column(name = "release_year")
 	private int releaseYear;
-	
-	@Column(name = "likes")
-	private int likes;
 	
 	public long getId() {
 		return id;
@@ -64,13 +68,10 @@ public class Movie {
 	public void setReleaseYear(int releaseYear) {
 		this.releaseYear = releaseYear;
 	}
-	
-	public int getLikes() {
-		return likes;
-	}
-	
-	public void setLikes(int likes) {
-		this.likes = likes;
+
+	@Override
+	public String toString() {
+		return "Movie [id=" + id + ", title=" + title + ", synopsis=" + synopsis + ", releaseYear=" + releaseYear + "]";
 	}
 
 }

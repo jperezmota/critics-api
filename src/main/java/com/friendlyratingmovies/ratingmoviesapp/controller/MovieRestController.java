@@ -1,29 +1,50 @@
 package com.friendlyratingmovies.ratingmoviesapp.controller;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
-import org.assertj.core.util.Arrays;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.friendlyratingmovies.ratingmoviesapp.entities.Movie;
+import com.friendlyratingmovies.ratingmoviesapp.service.MovieService;
 
 @RestController
 @RequestMapping("/api")
 public class MovieRestController {
 	
+	@Autowired
+	private MovieService movieService;
+	
 	@GetMapping("/movies")
-	public List<Movie> getPerspectives(){
-		Movie movie = new Movie();
-		movie.setId(1);
-		movie.setTitle("Venmom");
-		List<Movie> ar = new ArrayList();
-		ar.add(movie);
-		
-		return ar;
+	public Iterable<Movie> getPerspectives(){
+		return movieService.getMovies();
+	}
+	
+	@GetMapping("/movies/{id}")
+	public Movie getMovie(@PathVariable("id") long id) {
+		return movieService.getMovie(id);
+	}
+	
+	@PostMapping("/movies")
+	public Movie createMovie(@RequestBody Movie movie) {
+		return movieService.createMovie(movie);
+	}
+	
+	@DeleteMapping("/movies/{id}")
+	public void deleteMovie(@PathVariable long id) {
+		Movie movie = movieService.getMovie(id);
+		movieService.deleteMovie(movie);
+	}
+	
+	@PatchMapping("/movies/{id}")
+	public Movie updateMovie(@RequestBody Movie movie) {
+		return movieService.updateMovie(movie);
 	}
 
 }
